@@ -1,4 +1,4 @@
-import { pool } from '../database/connectionPool';
+import { pool } from './connectionPool';
 
 const product = () => {
     return {
