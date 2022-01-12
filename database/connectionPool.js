@@ -1,13 +1,14 @@
 import mysql from 'mysql2/promise';
+import db_config from '../config/db_config.json';
 
 const pool = mysql.createPool({
-    connectionLimit: 10,
-    waitForConnections: true,
-    host: 'dbp1.cr5f1puv6pnj.ap-northeast-2.rds.amazonaws.com',
-    port: '3306',
-    user: 'peoto',
-    password: 'peotodbp134!#',
-    database: 'piaar_main_v3.0.0'
+    connectionLimit: db_config.connectionLimit,
+    waitForConnections: db_config.waitForConnections,
+    host: db_config.host,
+    port: db_config.port,
+    user: db_config.user,
+    password: db_config.password,
+    database: db_config.database
 });
 
 //connetion을 획득하면 %d부분에 connetion id가 출력된다.  #### 여기 보세요 #####

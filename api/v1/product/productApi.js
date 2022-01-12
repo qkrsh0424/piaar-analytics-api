@@ -1,27 +1,29 @@
-import { pool } from '../../../database/connectionPool';
 import product from '../../../database/product';
 import productOption from '../../../database/productOption';
-import productRelease from '../../../database/productRelease';
 
 var express = require('express');
 var router = express.Router();
 
 router.get('/list-fj/with-unit', async (req, res) => {
+    let params = req.query;
+
     try {
-        const [productRows, productFields] = await product().findAll();
+        const [productRows, productFields] = await product().findByCondition(params);
         const productCids = productRows.map(r => r.cid);
 
-        const [productOptionRows, productOptionFields] = await productOption().findByProductCidsWithUnits(productCids);
+        let result = null;
+        if (productCids.length !== 0) {
+            const [productOptionRows, productOptionFields] = await productOption().findByProductCidsWithUnits(productCids);
 
-        let result = productRows.map(product => {
-            let json = {
-                product: product,
-                productOptions: productOptionRows.filter(productOption => productOption.product_cid === product.cid)
-            }
+            result = productRows.map(product => {
+                let json = {
+                    product: product,
+                    productOptions: productOptionRows.filter(productOption => productOption.product_cid === product.cid)
+                }
 
-            return json;
-        })
-
+                return json;
+            })
+        }
 
         res.status(200).send({
             status: 200,

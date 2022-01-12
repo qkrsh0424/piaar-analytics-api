@@ -31,7 +31,9 @@ const productOption = () => {
                             po.*,
                             (SELECT IFNULL(SUM(prec.receive_unit), 0) FROM product_receive prec WHERE prec.product_option_cid=po.cid) as 'total_receive_unit',
                             (SELECT IFNULL(SUM(prel.release_unit),0) FROM product_release prel WHERE prel.product_option_cid=po.cid) as 'total_release_unit',
-                            (SELECT IFNULL(SUM(prel.release_unit),0) FROM product_release prel WHERE prel.product_option_cid=po.cid AND prel.created_at BETWEEN DATE_SUB(now(), INTERVAL 15 DAY) AND now()) as 'total_release_unit_15'
+                            (SELECT IFNULL(SUM(prel.release_unit),0) FROM product_release prel WHERE prel.product_option_cid=po.cid AND prel.created_at BETWEEN DATE_SUB(now(), INTERVAL 7 DAY) AND now()) as 'total_release_unit_7',
+                            (SELECT IFNULL(SUM(prel.release_unit),0) FROM product_release prel WHERE prel.product_option_cid=po.cid AND prel.created_at BETWEEN DATE_SUB(now(), INTERVAL 14 DAY) AND now()) as 'total_release_unit_14',
+                            (SELECT IFNULL(SUM(prel.release_unit),0) FROM product_release prel WHERE prel.product_option_cid=po.cid AND prel.created_at BETWEEN DATE_SUB(now(), INTERVAL 21 DAY) AND now()) as 'total_release_unit_21'
                         FROM product_option po WHERE po.product_cid IN (?)
                     `, [productCids]);
                     connection.release();
